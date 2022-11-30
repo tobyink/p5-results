@@ -10,7 +10,7 @@ use warnings;
 
 =head1 NAME
 
-Result::Trait - a module that does something-or-other
+Result::Trait - the trait which all Result objects implement
 
 =head1 SYNOPSIS
 
