@@ -269,22 +269,69 @@ describe "method `type_or_else`" => sub {
 
 describe "method `unwrap`" => sub {
 
-	tests 'todo' => sub { pass; };
+	tests 'examples from Rust documentation' => sub {
+
+		{
+			my $x = results::ok( 2 );
+			is( $x->unwrap(), 2 );
+		}
+
+		{
+			my $x = results::err( "emergency failure" );
+			my $e = dies {
+				$x->unwrap();
+			};
+			like $e, qr/^emergency failure/;
+		}
+	};
 };
 
 describe "method `unwrap_err`" => sub {
 
-	tests 'todo' => sub { pass; };
+	tests 'examples from Rust documentation' => sub {
+
+		{
+			my $x = results::ok( 2 );
+			my $e = dies {
+				$x->unwrap_err();
+			};
+			like $e, qr/^2/;
+		}
+
+		{
+			my $x = results::err( "emergency failure" );
+			is( $x->unwrap_err(), "emergency failure" );
+		}
+	};
 };
 
 describe "method `unwrap_or`" => sub {
 
-	tests 'todo' => sub { pass; };
+	tests 'examples from Rust documentation' => sub {
+
+		my $default = 2;
+
+		{
+			my $x = results::ok( 9 );
+			is( $x->unwrap_or( $default ), 9 );
+		}
+
+		{
+			my $x = results::err( "error" );
+			is( $x->unwrap_or( $default ), $default );
+		}
+	};
 };
 
 describe "method `unwrap_or_else`" => sub {
 
-	tests 'todo' => sub { pass; };
+	tests 'examples from Rust documentation' => sub {
+
+		my $count = sub { length($_) };
+
+		is( results::ok( 2 )->unwrap_or_else( $count ), 2 );
+		is( results::err( "foo" )->unwrap_or_else( $count ), 3 );
+	};
 };
 
 describe "method `DESTROY`" => sub {

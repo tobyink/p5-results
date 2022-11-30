@@ -53,12 +53,7 @@ sub unwrap {
 	@_ == 1
 		or Carp::croak( 'Usage: $result->unwrap()' );
 
-		$self->[0] = !!1;
-
-	Carp::croak( sprintf(
-		'Expected to unwrap Ok, but this result is Err (%s)',
-		scalar $self->unwrap_err(),
-	) );
+	Carp::croak( $self->unwrap_err() );
 }
 
 sub unwrap_err {

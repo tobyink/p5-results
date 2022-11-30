@@ -785,16 +785,12 @@ sub unwrap {
 	@_ == 1
 		or Carp::croak( 'Usage: $result->unwrap()' );
 
-	$self->_handled( !!1 );
-
 	if ( $self->is_ok() ) {
+		$self->_handled( !!1 );
 		return $self->_peek();
 	}
 	else {
-		Carp::croak( sprintf(
-			'Expected to unwrap Ok, but this result is Err (%s)',
-			scalar $self->unwrap_err(),
-		) );
+		Carp::croak( $self->unwrap_err() );
 	}
 }
 
@@ -814,12 +810,11 @@ sub unwrap_err {
 	@_ == 1
 		or Carp::croak( 'Usage: $result->unwrap_err()' );
 
-	$self->_handled( !!1 );
-
 	if ( $self->is_ok() ) {
-		Carp::croak( 'Expected to unwrap_err Err, but this result is Ok' );
+		Carp::croak( $self->unwrap() );
 	}
 	else {
+		$self->_handled( !!1 );
 		return $self->_peek_err();
 	}
 }

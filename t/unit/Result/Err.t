@@ -28,11 +28,11 @@ use results ();
 describe "class `$CLASS`" => sub {
 
 	tests 'objects can be constructed' => sub {
-	
+
 		my $r = $CLASS->new();
 		ok( $r->isa( $CLASS ), "isa $CLASS" );
 		ok( $r->DOES( 'Result::Trait' ), "DOES Result::Trait" );
-		
+
 		$r->unwrap_err(); # avoid warning
 	};
 };
@@ -40,14 +40,14 @@ describe "class `$CLASS`" => sub {
 describe "method `_handled`" => sub {
 
 	tests 'method works' => sub {
-	
+
 		my $r = $CLASS->new();
 		ok( !$r->_handled, "false to start with" );
 		$r->_handled( !!1 );
 		ok( $r->_handled, "can be set to true" );
 		$r->_handled( !!0 );
 		ok( !$r->_handled, "can be set to false" );
-		
+
 		$r->unwrap_err(); # avoid warning
 	};
 };
@@ -55,12 +55,12 @@ describe "method `_handled`" => sub {
 describe "method `_peek_err`" => sub {
 
 	tests 'method works' => sub {
-	
+
 		my $r = $CLASS->new( 5 .. 10 );
 		is( scalar($r->_peek_err), 10, "in scalar context" );
 		is( [$r->_peek_err], [5..10], "in list context" );
 		is( do { $r->_peek_err; 1 }, 1, "in void context (doesn't throw)" );
-		
+
 		$r->unwrap_err(); # avoid warning
 	};
 };
@@ -68,10 +68,10 @@ describe "method `_peek_err`" => sub {
 describe "method `is_err`" => sub {
 
 	tests 'method works' => sub {
-	
+
 		my $r = $CLASS->new();
 		ok( $r->is_err, 'is true' );
-		
+
 		$r->unwrap_err(); # avoid warning
 	};
 };
@@ -79,10 +79,10 @@ describe "method `is_err`" => sub {
 describe "method `is_ok`" => sub {
 
 	tests 'method works' => sub {
-	
+
 		my $r = $CLASS->new();
 		ok( !$r->is_ok, 'is false' );
-		
+
 		$r->unwrap_err(); # avoid warning
 	};
 };
@@ -90,38 +90,38 @@ describe "method `is_ok`" => sub {
 describe "method `unwrap`" => sub {
 
 	tests 'method throws' => sub {
-	
+
 		my $r = $CLASS->new( 5 .. 10 );
-		
+
 		{
 			my $e = dies {
 				my $x = $r->unwrap;
 			};
 			like(
 				$e,
-				qr/Expected to unwrap Ok, but this result is Err \(10\)/,
+				qr/^5678910/,
 				'exception in scalar context',
 			);
 		}
-		
+
 		{
 			my $e = dies {
 				my @x = $r->unwrap;
 			};
 			like(
 				$e,
-				qr/Expected to unwrap Ok, but this result is Err \(10\)/,
+				qr/^5678910/,
 				'exception in list context',
 			);
 		}
-		
+
 		{
 			my $e = dies {
 				$r->unwrap; 1;
 			};
 			like(
 				$e,
-				qr/Expected to unwrap Ok, but this result is Err \(10\)/,
+				qr/^5678910/,
 				'exception in void context',
 			);
 		}
@@ -131,7 +131,7 @@ describe "method `unwrap`" => sub {
 describe "method `unwrap_err`" => sub {
 
 	tests 'method works' => sub {
-	
+
 		my $r = $CLASS->new( 5 .. 10 );
 		is( scalar($r->unwrap_err), 10, "in scalar context" );
 		is( [$r->unwrap_err], [5..10], "in list context" );

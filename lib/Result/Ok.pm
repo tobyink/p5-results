@@ -67,7 +67,7 @@ sub unwrap_err {
 
 	$self->[0] = !!1;
 
-	Carp::croak( 'Expected to unwrap Err, but this result is Ok' );
+	Carp::croak( $self->unwrap() );
 }
 
 1;

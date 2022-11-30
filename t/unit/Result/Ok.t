@@ -110,7 +110,7 @@ describe "method `unwrap_err`" => sub {
 			};
 			like(
 				$e,
-				qr/Expected to unwrap Err, but this result is Ok/,
+				qr/^5678910/,
 				'exception in scalar context',
 			);
 		}
@@ -121,7 +121,7 @@ describe "method `unwrap_err`" => sub {
 			};
 			like(
 				$e,
-				qr/Expected to unwrap Err, but this result is Ok/,
+				qr/^5678910/,
 				'exception in list context',
 			);
 		}
@@ -132,7 +132,7 @@ describe "method `unwrap_err`" => sub {
 			};
 			like(
 				$e,
-				qr/Expected to unwrap Err, but this result is Ok/,
+				qr/^5678910/,
 				'exception in void context',
 			);
 		}
