@@ -69,7 +69,7 @@ results - why throw exceptions when you can return them?
     return ok( uc $str );
   }
   
-  my $got = to_uppercase( "hello world" ).unwrap();
+  my $got = to_uppercase( "hello world" )->unwrap();
 
 =head1 DESCRIPTION
 

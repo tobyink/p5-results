@@ -14,9 +14,30 @@ Result::Trait - a module that does something-or-other
 
 =head1 SYNOPSIS
 
+  use results;
+  
+  sub to_uppercase {
+    my $str = shift;
+    
+    return err( "Cannot uppercase a reference." ) if ref $str;
+    return err( "Cannot uppercase undef." ) if not defined $str;
+    
+    return ok( uc $str );
+  }
+  
+  my $got = to_uppercase( "hello world" )->unwrap();
+
 =head1 DESCRIPTION
 
+The C<err>, C<ok>, and C<ok_list> functions from L<results> return objects
+which have the methods described in this trait.
+
 =head2 Methods
+
+These methods are available on all Result objects.
+
+Many of them will mark the Result as "handled". All Results should be
+handled.
 
 =cut
 
