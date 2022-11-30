@@ -17,18 +17,55 @@ This software is copyright (c) 2022 by Toby Inkster.
 This is free software; you can redistribute it and/or modify it under
 the same terms as the Perl 5 programming language system itself.
 
-
 =cut
 
 use Test2::V0 -target => 'results';
 use Test2::Tools::Spec;
 use Data::Dumper;
 
-describe "class `$CLASS`" => sub {
+use results ();
 
-	tests 'blah blah blah' => sub {
+describe "function `err`" => sub {
+
+	tests 'it returns a result which is_err()' => sub {
 	
-		pass;
+		my $r = results::err( 42 );
+		ok( $r->is_err() );
+		my $dummy = $r->unwrap_err();
+	};
+};
+
+package Local::Foo1 { sub DOES { 0; } };
+package Local::Foo2 { sub DOES { 1; } };
+
+describe "function `is_result`" => sub {
+
+	tests 'it correctly identifies objects which do the Result::Trait role' => sub {
+
+		ok !results::is_result( undef );
+		ok !results::is_result( {} );
+		ok !results::is_result( bless {}, 'Local::Foo1' );
+		ok  results::is_result( bless {}, 'Local::Foo2' );
+	};
+};
+
+describe "function `ok`" => sub {
+
+	tests 'it returns a result which is_ok()' => sub {
+	
+		my $r = results::ok( 42 );
+		ok( $r->is_ok() );
+		my $dummy = $r->unwrap();
+	};
+};
+
+describe "function `ok_list`" => sub {
+
+	tests 'it returns a result which is_ok()' => sub {
+	
+		my $r = results::ok_list( 42 );
+		ok( $r->is_ok() );
+		my @dummy = $r->unwrap();
 	};
 };
 
