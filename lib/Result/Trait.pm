@@ -935,6 +935,9 @@ Please report any bugs to
 L<results>,
 L<https://doc.rust-lang.org/std/result/enum.Result.html>.
 
+The unit tests for Result::Trait should provide useful clarifying examples:
+L<https://github.com/tobyink/p5-results/blob/master/t/unit/Result/Trait.t>.
+
 =head1 AUTHOR
 
 Toby Inkster E<lt>tobyink@cpan.orgE<gt>.
