@@ -103,6 +103,17 @@ sub __IS_TYPE__ {
 
 ##############################################################################
 
+# Check if something is a blessed exception we can work with.
+#
+
+sub __IS_FRIENDLY_EXCEPTION__ {
+	Scalar::Util::blessed( $_[0] )
+		and $_[0]->can( 'DOES' )
+		and $_[0]->DOES( 'Result::Exception' )
+}
+
+##############################################################################
+
 # Helper for implementations of this trait to use.
 #
 
@@ -552,6 +563,68 @@ sub map_or_else {
 
 	local $_ = $self->_peek;
 	results::ok( $f->( $self->unwrap() ) )->unwrap();
+}
+
+##############################################################################
+
+=head3 C<< $result->match( %dispatch_table ) >>
+
+The C<< %dispatch_table >> is a hash of coderefs.
+
+The keys 'ok' and 'err' are required coderefs to handle ok and err Results.
+
+(Additional coderefs with keys "err_XXX" are allowed, where "XXX" is a short
+name for a kind of error. If C<match> is called on an err Result, and the
+error is a blessed object which DOES the "Result::Exception" trait, then
+C<< $result->unwrap_err()->err_kind() >> is called and expected to return
+a string indicating the error kind.)
+
+The unwrapped value or error is available in C<< $_ >> and C<< @_ >> as
+you might expect.
+
+B<< This method is not found in the original Rust implementation of Results. >>
+
+=head4 Example
+
+  get_name()->match(
+    ok   => sub { say "Hello, $_" },
+    err  => sub { warn $_ },
+  );
+
+=head4 Example
+
+  open_file($filename)->match(
+    ok            => sub { $_->write( $data ) },
+    err_Auth      => sub { die( "Permissions error!" ) },
+    err_DiskFull  => sub { die( "Disk is full!" ) },
+    err           => sub { die( "Another error occurred!" ) },
+  );
+
+=cut
+
+sub match {
+	my ( $self, %d ) = @_;
+	exists( $d{ok} ) && exists( $d{err} )
+		or Carp::croak( 'Usage: $result->match( ok => sub { ... }, err => sub { ... }, ... )' );
+
+	if ( $self->is_ok() ) {
+		my $d = $d{ok};
+		__IS_CODE__($d)
+			or Carp::croak( 'Usage: $result->match( ok => sub { ... }, err => sub { ... }, ... )' );
+		local $_ = $self->_peek();
+		return $d->( $self->unwrap );
+	}
+
+	my $d = $d{err};
+	my $peek = $self->_peek_err;
+	if ( __IS_FRIENDLY_EXCEPTION__($peek) ) {
+		my $err_kind = $peek->err_kind;
+		$d = $d{"err_$err_kind"} // $d{err};
+	}
+	__IS_CODE__($d)
+		or Carp::croak( 'Usage: $result->match( ok => sub { ... }, err => sub { ... }, ... )' );
+	local $_ = $peek;
+	return $d->( $self->unwrap_err );
 }
 
 ##############################################################################

@@ -287,6 +287,55 @@ describe "method `map_or_else`" => sub {
 	};
 };
 
+package Local::Foo {
+	sub new {
+		bless [], shift;
+	}
+	sub err_kind {
+		'Foo';
+	}
+	sub DOES {
+		1;
+	}
+	sub value {
+		999;
+	}
+}
+
+describe "method `match`" => sub {
+
+	tests 'original tests' => sub {
+
+		is(
+			results::ok( 2 )->match(
+				ok       => sub { 40 + $_ },
+				err      => sub { fail() },
+				err_Foo  => sub { fail() },
+			),
+			42,
+		);
+
+		is(
+			results::err( 2 )->match(
+				ok       => sub { fail() },
+				err      => sub { 40 + $_ },
+				err_Foo  => sub { fail() },
+			),
+			42,
+		);
+
+		is(
+			results::err( 'Local::Foo'->new )->match(
+				ok       => sub { fail() },
+				err      => sub { fail() },
+				err_Foo  => sub { $_->value },
+			),
+			999,
+		);
+
+	};
+};
+
 describe "method `ok`" => sub {
 
 	tests 'examples from Rust documentation' => sub {
