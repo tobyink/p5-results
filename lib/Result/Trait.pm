@@ -653,7 +653,7 @@ sub or_else {
 	if ( $self->is_err() ) {
 		local $_ = $self->_peek_err;
 		my $res = $op->( $self->unwrap_err() );
-		__IS_RESULT__($op)
+		__IS_RESULT__($res)
 			or Carp::croak( 'Coderef did not return a Result' );
 		return $res;
 	}

@@ -154,7 +154,7 @@ describe "method `flatten`" => sub {
 describe "method `inspect`" => sub {
 
 	tests 'original tests' => sub {
-		
+
 		{
 			my $got;
 			my $x = results::ok( 99 );
@@ -176,7 +176,7 @@ describe "method `inspect`" => sub {
 describe "method `inspect_err`" => sub {
 
 	tests 'original tests' => sub {
-		
+
 		{
 			my $x = results::ok( 99 );
 			$x->inspect_err( sub { fail(); } );
@@ -304,12 +304,48 @@ describe "method `ok`" => sub {
 
 describe "method `or`" => sub {
 
-	tests 'todo' => sub { pass; };
+	tests 'examples from Rust documentation' => sub {
+
+		{
+			my $x = results::ok(2);
+			my $y = results::err("late error");
+			is( $x->or( $y )->unwrap, 2 );
+			$y->unwrap_err;
+		}
+
+		{
+			my $x = results::err("early error");
+			my $y = results::ok(2);
+			is( $x->or( $y )->unwrap, 2 );
+		}
+
+		{
+			my $x = results::err("not a 2");
+			my $y = results::err("late error");
+			is( $x->or( $y )->unwrap_err, "late error" );
+		}
+
+		{
+			my $x = results::ok(2);
+			my $y = results::ok(100);
+			is( $x->or( $y )->unwrap, 2 );
+			$y->unwrap;
+		}
+	};
 };
 
 describe "method `or_else`" => sub {
 
-	tests 'todo' => sub { pass; };
+	tests 'examples from Rust documentation' => sub {
+
+		my $sq  = sub { results::ok( $_ ** 2 ) };
+		my $err = sub { results::err( $_ ) };
+
+		is( results::ok( 2 )->or_else( $sq )->or_else( $sq )->unwrap, 2 );
+		is( results::ok( 2 )->or_else( $err )->or_else( $sq )->unwrap, 2 );
+		is( results::err( 3 )->or_else( $sq )->or_else( $err )->unwrap, 9 );
+		is( results::err( 3 )->or_else( $err )->or_else( $err )->unwrap_err, 3 );
+	};
 };
 
 describe "method `type`" => sub {
@@ -396,7 +432,20 @@ describe "method `unwrap_or_else`" => sub {
 
 describe "method `DESTROY`" => sub {
 
-	tests 'todo' => sub { pass; };
+	tests 'original tests' => sub {
+
+		{
+			my $x = results::ok(2);
+			my $e = dies { $x->DESTROY };
+			like $e, qr/^ok\(2\) went out of scope/;
+		}
+
+		{
+			my $x = results::err(2);
+			my $e = dies { $x->DESTROY };
+			like $e, qr/^err\(2\) went out of scope/;
+		}
+	};
 };
 
 done_testing;
