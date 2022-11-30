@@ -6,6 +6,9 @@ use Result::Trait ();
 
 package Result::OkList;
 
+our $AUTHORITY = 'cpan:TOBYINK';
+our $VERSION   = '0.001';
+
 use parent qw( Result::Ok );
 
 'overload'->import( 'Result::Trait'->__OVERLOAD_ARGS__( 'ok_list', '_peek' ) );

@@ -4,6 +4,9 @@ use warnings;
 
 package results::exceptions;
 
+our $AUTHORITY = 'cpan:TOBYINK';
+our $VERSION   = '0.001';
+
 use results ();
 use B ();
 use Exporter::Shiny;
