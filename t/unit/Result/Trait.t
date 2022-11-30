@@ -100,7 +100,7 @@ describe "method `expect`" => sub {
 		};
 		like $e, qr/Testing expect/;
 	};
-	
+
 	tests 'further tests' => sub {
 		my $x = results::ok( 42 );
 		is( $x->expect( "Testing expect" ), 42 );
@@ -117,11 +117,179 @@ describe "method `expect_err`" => sub {
 		};
 		like $e, qr/Testing expect_err/;
 	};
-	
+
 	tests 'further tests' => sub {
 		my $x = results::err( "emergency failure" );
 		is( $x->expect_err( "Testing expect_err" ), "emergency failure" );
 	};
+};
+
+describe "method `flatten`" => sub {
+
+	tests 'examples from Rust documentation' => sub {
+
+		{
+			my $x = results::ok( results::ok("hello") );
+			is( $x->flatten()->unwrap(), "hello" );
+		}
+
+		{
+			my $x = results::ok( results::err(6) );
+			is( $x->flatten()->unwrap_err(), 6 );
+		}
+
+		{
+			my $x = results::err(6);
+			is( $x->flatten()->unwrap_err(), 6 );
+		}
+	};
+
+	tests 'further tests' => sub {
+		my $x = results::ok( 6 );
+		my $e = dies { $x->flatten() };
+		like $e, qr/Result did not contain a Result/;
+	};
+};
+
+describe "method `inspect`" => sub {
+
+	tests 'todo' => sub { pass; };
+};
+
+describe "method `inspect_err`" => sub {
+
+	tests 'todo' => sub { pass; };
+};
+
+describe "method `is_err`" => sub {
+
+	tests 'examples from Rust documentation' => sub {
+
+		{
+			my $x = results::ok( -3 );
+			ok( !$x->is_err() );
+
+			ok( !$x->_handled );
+			$x->unwrap();
+		}
+
+		{
+			my $x = results::err( "Some error message" );
+			ok( $x->is_err() );
+
+			ok( !$x->_handled );
+			$x->unwrap_err();
+		}
+	};
+};
+
+describe "method `is_ok`" => sub {
+
+	tests 'examples from Rust documentation' => sub {
+
+		{
+			my $x = results::ok( -3 );
+			ok( $x->is_ok() );
+
+			ok( !$x->_handled );
+			$x->unwrap();
+		}
+
+		{
+			my $x = results::err( "Some error message" );
+			ok( !$x->is_ok() );
+
+			ok( !$x->_handled );
+			$x->unwrap_err();
+		}
+	};
+};
+
+
+describe "method `map`" => sub {
+
+	tests 'todo' => sub { pass; };
+};
+
+describe "method `map_err`" => sub {
+
+	tests 'todo' => sub { pass; };
+};
+
+describe "method `map_or`" => sub {
+
+	tests 'todo' => sub { pass; };
+};
+
+describe "method `map_or_else`" => sub {
+
+	tests 'todo' => sub { pass; };
+};
+
+describe "method `ok`" => sub {
+
+	tests 'examples from Rust documentation' => sub {
+
+		{
+			my $x = results::ok( 2 );
+			is( $x->ok(), 2 );
+		}
+
+		{
+			my $x = results::err( "nothing here" );
+			is( $x->ok(), undef );
+		}
+	};
+};
+
+describe "method `or`" => sub {
+
+	tests 'todo' => sub { pass; };
+};
+
+describe "method `or_else`" => sub {
+
+	tests 'todo' => sub { pass; };
+};
+
+describe "method `type`" => sub {
+
+	tests 'todo' => sub { pass; };
+};
+
+describe "method `type_or`" => sub {
+
+	tests 'todo' => sub { pass; };
+};
+
+describe "method `type_or_else`" => sub {
+
+	tests 'todo' => sub { pass; };
+};
+
+describe "method `unwrap`" => sub {
+
+	tests 'todo' => sub { pass; };
+};
+
+describe "method `unwrap_err`" => sub {
+
+	tests 'todo' => sub { pass; };
+};
+
+describe "method `unwrap_or`" => sub {
+
+	tests 'todo' => sub { pass; };
+};
+
+describe "method `unwrap_or_else`" => sub {
+
+	tests 'todo' => sub { pass; };
+};
+
+describe "method `DESTROY`" => sub {
+
+	tests 'todo' => sub { pass; };
 };
 
 done_testing;

@@ -289,7 +289,9 @@ sub expect_err {
 If this is an ok Result containing another Result, returns the inner Result.
 The outer Result is considered to be handled.
 
-Otherwise, returns self. The Result is not considered handled.
+If this is an ok Result not containing another Result, throws.
+
+If this is an err Result, returns self. The Result is not considered handled.
 
 Note this is not a recursive flatten. It only flattens one level of Results.
 
@@ -297,11 +299,14 @@ Note this is not a recursive flatten. It only flattens one level of Results.
 
 sub flatten {
 	my ( $self ) = @_;
-	@_ == 2
+	@_ == 1
 		or Carp::croak( 'Usage: $result->flatten()' );
 
-	if ( $self->is_ok() and __IS_RESULT__($self->_peek()) ) {
-		return $self->unwrap();
+	if ( $self->is_ok() ) {
+		my $inner = $self->unwrap();
+		__IS_RESULT__($inner)
+			or Carp::croak( 'Result did not contain a Result' );
+		return $inner;
 	}
 
 	return $self;
@@ -668,6 +673,8 @@ returns self. Not considered handled.
 Otherwise returns an err Result with the type validation error message.
 In this case the original Result is considered handled.
 
+B<< This method is not found in the original Rust implementation of Results. >>
+
 =head4 Example
 
 If C<< get_config() >> returns an ok Result containing a hashref, then:
@@ -702,6 +709,8 @@ returns self. Not considered handled.
 
 Otherwise returns an ok Result with the default value(s). In this case
 the original Result is considered handled.
+
+B<< This method is not found in the original Rust implementation of Results. >>
 
 =head4 Example
 
@@ -738,6 +747,8 @@ returns self. Not considered handled.
 
 Otherwise executes the coderef, which is expected to return a Result.
 In this case the original Result is considered handled.
+
+B<< This method is not found in the original Rust implementation of Results. >>
 
 =cut
 
