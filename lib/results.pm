@@ -182,11 +182,14 @@ Or even better, an exception object:
 
   return err( MyApp::Error::NotImplemented->new );
 
+The L<results::exceptions> module provides a very convenient way to create
+a large number of lightweight exception classes suitable for that.
+
 Like C<< ok() >> this can take a list:
 
   return err( MyApp::Error::Net->new, 0 .. 99 );
 
-This would be unusual though.
+This would be unusual though, and is not generally recommended.
 
 =head1 HANDLING RESULTS
 
@@ -217,7 +220,7 @@ C<< is_result() >> is not exported by default, but can be requested:
 The full set of methods available on Results is documented in
 L<Result::Trait>, but a few important ones are described here. These
 methods are C<< is_err() >>, C<< is_ok() >>, C<< unwrap() >>,
-C<< unwrap_err() >>, and C<< expect() >>.
+C<< unwrap_err() >>, C<< expect() >>, and C<< match() >>.
 
 =head3 C<< $result->is_err() >>
 
@@ -276,6 +279,18 @@ Similar to C<unwrap>, but if called on an unsuccessful Result, dies with
 the given error message.
 
 If C<expect> is called, the Result is considered to be handled.
+
+=head3 C<< $result->match( %dispatch_table ) >>
+
+This provides an easy way to deal with different kinds of Results at the
+same time.
+
+  $result->match(
+    err_Unauthorized   => sub { ... },
+    err_FileNotFound   => sub { ... },
+    err                => sub { ... },  # all other errors
+    ok                 => sub { ... },
+  );
 
 =head3 Other methods
 
