@@ -9,7 +9,7 @@ package Result::Err;
 use Role::Tiny::With;
 with 'Result::Trait';
 
-'overload'->import( __PACKAGE__->__OVERLOAD_ARGS__( 'err', '_peek_err' ) );
+'overload'->import( 'Result::Trait'->__OVERLOAD_ARGS__( 'err', '_peek_err' ) );
 
 sub new {
 	my $class = shift;
@@ -52,6 +52,8 @@ sub unwrap {
 	my ( $self ) = @_;
 	@_ == 1
 		or Carp::croak( 'Usage: $result->unwrap()' );
+
+		$self->[0] = !!1;
 
 	Carp::croak( sprintf(
 		'Expected to unwrap Ok, but this result is Err (%s)',

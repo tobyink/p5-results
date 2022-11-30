@@ -2,10 +2,6 @@ use 5.014;
 use strict;
 use warnings;
 
-use Result::Err ();
-use Result::Ok ();
-use Result::OkList ();
-
 use Carp ();
 use Scalar::Util ();
 
@@ -16,6 +12,10 @@ our $VERSION   = '0.001';
 
 use Exporter::Shiny qw( err is_result ok ok_list );
 our @EXPORT = qw( err ok );
+
+require Result::Err;
+require Result::Ok;
+require Result::OkList;
 
 use constant {
 	ERR_CLASS     => 'Result::Err',
@@ -316,7 +316,8 @@ Please report any bugs to
 
 =head1 SEE ALSO
 
-L<Result::Trait>.
+L<Result::Trait>,
+L<https://doc.rust-lang.org/std/result/>.
 
 =head1 AUTHOR
 

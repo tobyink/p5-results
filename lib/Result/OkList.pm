@@ -8,7 +8,7 @@ package Result::OkList;
 
 use parent qw( Result::Ok );
 
-'overload'->import( __PACKAGE__->__OVERLOAD_ARGS__( 'ok_list', '_peek' ) );
+'overload'->import( 'Result::Trait'->__OVERLOAD_ARGS__( 'ok_list', '_peek' ) );
 
 sub unwrap {
 	my ( $self ) = @_;

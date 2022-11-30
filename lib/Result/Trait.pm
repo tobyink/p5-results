@@ -748,8 +748,9 @@ sub unwrap {
 	@_ == 1
 		or Carp::croak( 'Usage: $result->unwrap()' );
 
+	$self->_handled( !!1 );
+
 	if ( $self->is_ok() ) {
-		$self->_handled( !!1 );
 		return $self->_peek();
 	}
 	else {
@@ -776,11 +777,12 @@ sub unwrap_err {
 	@_ == 1
 		or Carp::croak( 'Usage: $result->unwrap_err()' );
 
+	$self->_handled( !!1 );
+
 	if ( $self->is_ok() ) {
 		Carp::croak( 'Expected to unwrap_err Err, but this result is Ok' );
 	}
 	else {
-		$self->_handled( !!1 );
 		return $self->_peek_err();
 	}
 }
@@ -904,7 +906,8 @@ Please report any bugs to
 
 =head1 SEE ALSO
 
-L<results>.
+L<results>,
+L<https://doc.rust-lang.org/std/result/enum.Result.html>.
 
 =head1 AUTHOR
 

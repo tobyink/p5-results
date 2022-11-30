@@ -9,7 +9,7 @@ package Result::Ok;
 use Role::Tiny::With;
 with 'Result::Trait';
 
-'overload'->import( __PACKAGE__->__OVERLOAD_ARGS__( 'ok', '_peek' ) );
+'overload'->import( 'Result::Trait'->__OVERLOAD_ARGS__( 'ok', '_peek' ) );
 
 sub new {
 	my $class = shift;
@@ -64,6 +64,8 @@ sub unwrap_err {
 	my ( $self ) = @_;
 	@_ == 1
 		or Carp::croak( 'Usage: $result->unwrap_err()' );
+
+	$self->[0] = !!1;
 
 	Carp::croak( 'Expected to unwrap Err, but this result is Ok' );
 }
