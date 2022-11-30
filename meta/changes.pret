@@ -1,6 +1,11 @@
 # This file acts as the project's changelog.
 
+`results 0.002 cpan:TOBYINK`
+	issued  2022-11-30;
+	changeset [
+		item "Minor fixes and improvements to documentation."^^Documentation;
+	].
+
 `results 0.001 cpan:TOBYINK`
 	issued  2022-11-30;
 	label   "Initial release".
-
