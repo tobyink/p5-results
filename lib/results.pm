@@ -84,7 +84,7 @@ sugar for propagating the error further up the call stack.)
 Recent versions of Perl provide C<try>/C<catch>/C<throw> (though C<throw>
 is spelled "die"), and in older versions the same thing can be roughly
 accomplished using C<eval> or CPAN modules, making Rust's error handling
-seem fairly foreign. For this reason I do not recomment using the
+seem fairly foreign. For this reason I do not recommend using the
 a mixture of C<try>/C<catch>/C<throw> error handling and Result-based
 error handling in the same codebase. Pick one or the other.
 
@@ -98,7 +98,9 @@ so I do think it is worthy of consideration.
 If you decide that your function should return a Result object, your function
 should I<always> return a Result object.
 
-Do not return Results for errors but bare values for success:
+Do not return Results for errors but bare values for success. The following
+example is bad because the caller cannot rely on the result of C<to_uppercase>
+I<always> being a Result object.
 
   use results;
   
@@ -109,6 +111,19 @@ Do not return Results for errors but bare values for success:
     return err( "Cannot uppercase undef." ) if not defined $str;
     
     return uc $str;  # BAD
+  }
+
+Instead:
+
+  use results;
+  
+  sub to_uppercase {
+    my $str = shift;
+    
+    return err( "Cannot uppercase a reference." ) if ref $str;
+    return err( "Cannot uppercase undef." ) if not defined $str;
+    
+    return ok( uc $str );  # FIXED
   }
 
 C<die> can still be used in code that uses result-based error handling,
