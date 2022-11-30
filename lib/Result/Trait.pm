@@ -205,8 +205,6 @@ sub and_then {
 	my $res = $op->( $self->unwrap() );
 	__IS_RESULT__($res)
 		or Carp::croak( 'Coderef did not return a Result' );
-
-	$self->_handled( !!1 );
 	$res;
 }
 
@@ -216,7 +214,7 @@ sub and_then {
 
 For err Results, the same as C<unwrap>. For ok Results, returns nothing.
 
-The Result is considered to be handled if it was an err Result.
+The Result is considered to be handled.
 
 =cut
 
@@ -224,6 +222,8 @@ sub err {
 	my ( $self ) = @_;
 	@_ == 1
 		or Carp::croak( 'Usage: $result->err()' );
+
+	$self->_handled( !!1 );
 
 	return $self->unwrap_err() if $self->is_err();
 
@@ -249,6 +249,8 @@ sub expect {
 
 	return $self->unwrap() if $self->is_ok();
 
+	$self->_handled( !!1 );
+
 	local $Carp::CarpLevel = $Carp::CarpLevel + 1;
 	Carp::croak( $message );
 }
@@ -273,6 +275,8 @@ sub expect_err {
 		or Carp::croak( 'Usage: $result->expect_err( $message )' );
 
 	return $self->unwrap_err() if $self->is_err();
+
+	$self->_handled( !!1 );
 
 	local $Carp::CarpLevel = $Carp::CarpLevel + 1;
 	Carp::croak( $message );
@@ -543,6 +547,28 @@ sub map_or_else {
 
 	local $_ = $self->_peek;
 	results::ok( $f->( $self->unwrap() ) )->unwrap();
+}
+
+##############################################################################
+
+=head3 C<< $result->ok() >>
+
+For ok Results, the same as C<unwrap>. For err Results, returns nothing.
+
+The Result is considered to be handled.
+
+=cut
+
+sub ok {
+	my ( $self ) = @_;
+	@_ == 1
+		or Carp::croak( 'Usage: $result->ok()' );
+
+	$self->_handled( !!1 );
+
+	return $self->unwrap() if $self->is_ok();
+
+	return;
 }
 
 ##############################################################################
