@@ -109,7 +109,7 @@ sub __IS_TYPE__ {
 sub __IS_FRIENDLY_EXCEPTION__ {
 	Scalar::Util::blessed( $_[0] )
 		and $_[0]->can( 'DOES' )
-		and $_[0]->DOES( 'Result::Exception' )
+		and $_[0]->DOES( 'results::exceptions' )
 }
 
 ##############################################################################
