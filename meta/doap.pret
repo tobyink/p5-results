@@ -4,7 +4,7 @@
 
 `results`
 	:programming-language "Perl" ;
-	:shortdesc            "a module that does something-or-other";
+	:shortdesc            "why throw exceptions when you can return them?";
 	:homepage             <https://metacpan.org/release/results>;
 	:download-page        <https://metacpan.org/release/results>;
 	:bug-database         <https://github.com/tobyink/p5-results/issues>;
