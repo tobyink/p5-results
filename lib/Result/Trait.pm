@@ -700,7 +700,7 @@ sub type {
 
 ##############################################################################
 
-=head3 C<< $result->type_or( $constraint, @default ) >>
+=head3 C<< $result->type_or( @default, $constraint ) >>
 
 If this Result is an err, returns self. Not considered handled.
 
@@ -723,22 +723,23 @@ If C<< get_config() >> returns an ok Result containing a hashref, then:
 =cut
 
 sub type_or {
-	my ( $self, $type, @default ) = @_;
-	@_ >= 2 && __IS_TYPE__($type)
-		or Carp::croak( 'Usage: $result->type_or( $constraint, $default )' );
+	my $type = pop;
+	my ( $self, @default ) = @_;
+	@_ >= 1 && __IS_TYPE__($type)
+		or Carp::croak( 'Usage: $result->type_or( $default, $constraint )' );
 
 	return $self if $self->is_err();
 
 	my $peek = $self->_peek();
 	return $self if $type->check( $peek );
 
-	$self->handled( !!1 );
+	$self->_handled( !!1 );
 	return results::ok( @default );
 }
 
 ##############################################################################
 
-=head3 C<< $result->type_or_else( $constraint, sub { ELSE } ) >>
+=head3 C<< $result->type_or_else( sub { ELSE }, $constraint ) >>
 
 If this Result is an err, returns self. Not considered handled.
 
@@ -753,9 +754,9 @@ B<< This method is not found in the original Rust implementation of Results. >>
 =cut
 
 sub type_or_else {
-	my ( $self, $type, $op ) = @_;
+	my ( $self, $op, $type ) = @_;
 	@_ == 3 && __IS_TYPE__($type) && __IS_CODE__($op)
-		or Carp::croak( 'Usage: $result->type_or( $constraint, sub { ... } )' );
+		or Carp::croak( 'Usage: $result->type_or_else( $constraint, sub { ... } )' );
 
 	return $self if $self->is_err();
 
@@ -764,7 +765,7 @@ sub type_or_else {
 
 	local $_ = $peek;
 	my $res = $op->( $self->unwrap() );
-	__IS_RESULT__($op)
+	__IS_RESULT__($res)
 		or Carp::croak( 'Coderef did not return a Result' );
 	return $res;
 }

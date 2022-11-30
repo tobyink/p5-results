@@ -24,6 +24,7 @@ use Test2::Tools::Spec;
 use Data::Dumper;
 
 use results ();
+use Type::Nano qw( HashRef ArrayRef Str );
 
 describe "method `and`" => sub {
 
@@ -350,17 +351,37 @@ describe "method `or_else`" => sub {
 
 describe "method `type`" => sub {
 
-	tests 'todo' => sub { pass; };
+	tests 'original tests' => sub {
+
+		is( results::ok( "hello" )->type( Str )->unwrap, "hello" );
+
+		like(
+			results::ok( "hello" )->type( ArrayRef )->unwrap_err,
+			qr/did not pass type constraint/,
+		);
+	};
 };
 
 describe "method `type_or`" => sub {
 
-	tests 'todo' => sub { pass; };
+	tests 'original tests' => sub {
+
+		is( results::ok( "hello" )->type_or( "world", Str )->unwrap, "hello" );
+
+		is( results::ok( "hello" )->type_or( "world", ArrayRef )->unwrap, "world" );
+	};
 };
 
 describe "method `type_or_else`" => sub {
 
-	tests 'todo' => sub { pass; };
+	tests 'original tests' => sub {
+
+		my $to_string = sub { results::ok( "$_" ) };
+
+		is( results::ok( "hello" )->type_or_else( $to_string, Str )->unwrap, "hello" );
+
+		like( results::ok( [] )->type_or_else( $to_string, Str )->unwrap, qr/^ARRAY\(\S+\)$/ );
+	};
 };
 
 describe "method `unwrap`" => sub {
