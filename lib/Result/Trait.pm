@@ -546,8 +546,8 @@ sub map_or_else {
 		or Carp::croak( 'Usage: $result->map_or_else( sub { ... }, sub { ... } )' );
 
 	if ( $self->is_err() ) {
-		$self->_handled( !!1 );
-		return results::ok( $default->( $self ) )->unwrap();
+		local $_ = $self->_peek_err();
+		return results::ok( $default->( $self->unwrap_err() ) )->unwrap();
 	}
 
 	local $_ = $self->_peek;

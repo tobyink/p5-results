@@ -153,12 +153,46 @@ describe "method `flatten`" => sub {
 
 describe "method `inspect`" => sub {
 
-	tests 'todo' => sub { pass; };
+	tests 'original tests' => sub {
+		
+		{
+			my $got;
+			my $x = results::ok( 99 );
+			$x->inspect( sub { $got = $_ } );
+			ok( !$x->_handled );
+			is( $x->unwrap, 99 );
+			is( $got, 99 );
+		}
+
+		{
+			my $x = results::err( 99 );
+			$x->inspect( sub { fail(); } );
+			ok( !$x->_handled );
+			is( $x->unwrap_err, 99 );
+		}
+	};
 };
 
 describe "method `inspect_err`" => sub {
 
-	tests 'todo' => sub { pass; };
+	tests 'original tests' => sub {
+		
+		{
+			my $x = results::ok( 99 );
+			$x->inspect_err( sub { fail(); } );
+			ok( !$x->_handled );
+			is( $x->unwrap, 99 );
+		}
+
+		{
+			my $got;
+			my $x = results::err( 99 );
+			$x->inspect_err( sub { $got = $_ } );
+			ok( !$x->_handled );
+			is( $x->unwrap_err, 99 );
+			is( $got, 99 );
+		}
+	};
 };
 
 describe "method `is_err`" => sub {
@@ -208,22 +242,48 @@ describe "method `is_ok`" => sub {
 
 describe "method `map`" => sub {
 
-	tests 'todo' => sub { pass; };
+	tests 'original tests' => sub {
+
+		my $map = sub { $_ * 2 };
+
+		is( results::ok( 9 )->map( $map )->unwrap(), 18 );
+		is( results::err( 9 )->map( $map )->unwrap_err(), 9 );
+	};
 };
 
 describe "method `map_err`" => sub {
 
-	tests 'todo' => sub { pass; };
+	tests 'original tests' => sub {
+
+		my $map = sub { $_ * 2 };
+
+		is( results::ok( 9 )->map_err( $map )->unwrap(), 9 );
+		is( results::err( 9 )->map_err( $map )->unwrap_err(), 18 );
+	};
 };
 
 describe "method `map_or`" => sub {
 
-	tests 'todo' => sub { pass; };
+	tests 'original tests' => sub {
+
+		my $map = sub { $_ * 2 };
+		my $default = 42;
+
+		is( results::ok( 9 )->map_or( $default, $map ), 18 );
+		is( results::err( 9 )->map_or( $default, $map ), 42 );
+	};
 };
 
 describe "method `map_or_else`" => sub {
 
-	tests 'todo' => sub { pass; };
+	tests 'original tests' => sub {
+
+		my $map = sub { $_ * 2 };
+		my $default = sub { "[[$_]]" };
+
+		is( results::ok( 9 )->map_or_else( $default, $map ), 18 );
+		is( results::err( 9 )->map_or_else( $default, $map ), "[[9]]" );
+	};
 };
 
 describe "method `ok`" => sub {
