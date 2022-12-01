@@ -1,5 +1,13 @@
 # This file acts as the project's changelog.
 
+`results 0.003 cpan:TOBYINK`
+	issued  2022-12-01;
+	changeset [
+		item "Document exports."^^Documentation;
+		item "Explain use of results::exceptions more."^^Documentation;
+		item "Other minor fixes and improvements to documentation."^^Documentation;
+	].
+
 `results 0.002 cpan:TOBYINK`
 	issued  2022-11-30;
 	changeset [

@@ -7,7 +7,7 @@ use Result::Trait ();
 package Result::OkList;
 
 our $AUTHORITY = 'cpan:TOBYINK';
-our $VERSION   = '0.002';
+our $VERSION   = '0.003';
 
 use parent qw( Result::Ok );
 
