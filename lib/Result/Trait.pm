@@ -575,9 +575,10 @@ The keys 'ok' and 'err' are required coderefs to handle ok and err Results.
 
 (Additional coderefs with keys "err_XXX" are allowed, where "XXX" is a short
 name for a kind of error. If C<match> is called on an err Result, and the
-error is a blessed object which DOES the "Result::Exception" trait, then
+error is a blessed object which DOES the "results::exceptions" trait, then
 C<< $result->unwrap_err()->err_kind() >> is called and expected to return
-a string indicating the error kind.)
+a string indicating the error kind. The L<results::exceptions> module makes
+it very easy to create exception objects like this!)
 
 The unwrapped value or error is available in C<< $_ >> and C<< @_ >> as
 you might expect.

@@ -206,6 +206,25 @@ Like C<< ok() >> this can take a list:
 
 This would be unusual though, and is not generally recommended.
 
+=head2 Exception Objects
+
+It is often easier for your caller to deal with exception objects rather
+than string error messages. This module comes with L<results::exceptions>
+to make creating these a little easier. The example in the L</SYNOPSIS>
+section could be written as:
+
+  use results;
+  use results::exceptions qw( UnexpectedRef UnexpectedUndef );
+  
+  sub to_uppercase {
+    my $str = shift;
+     
+    return UnexpectedRef->err if ref $str;
+    return UnexpectedUndef->err if not defined $str;
+    
+    return ok( uc $str );
+  }
+
 =head1 HANDLING RESULTS
 
 =head2 Introduction
@@ -338,6 +357,79 @@ enforcement of type constraints though.)
 
 Methods related to Rust's borrowing, copying, and cloning are not
 implemented in L<Result::Trait> as they do not make a lot of sense.
+
+=head1 EXPORTS
+
+This module exports four functions:
+
+=over
+
+=item *
+
+C<err>
+
+=item *
+
+C<ok>
+
+=item *
+
+C<ok_list>
+
+=item *
+
+C<is_result>
+
+=back
+
+By default, only the first two are exported, but you can list the functions
+you want like this:
+
+  use results qw( err ok ok_list is_result );
+
+Or just:
+
+  use results -all;
+
+You can import no functions using:
+
+  use results ();
+
+And then just refer to them by their full name like C<< results::ok() >>.
+
+You can rename functions:
+
+  use results (
+    ok   => { -as => 'Okay' },
+    err  => { -as => 'Error' },
+  );
+
+Renaming imports may be useful if you find the default names conflict with
+other modules you're using. In particular, L<Test::More> and other Perl testing
+modules export a function called C<ok>.
+
+=head2 Lexical exports
+
+If you have Perl 5.37.2 or above, or install L<Lexical::Sub> on older versions
+of Perl, you can import this module lexically using:
+
+  use results -lexical;
+  
+  # or
+  use results -lexical, -all;
+  
+  # or
+  use results -lexical, (
+    ok   => { -as => 'Okay' },
+    err  => { -as => 'Error' },
+  );
+
+L<results::exceptions> also supports lexical exports:
+
+  use results::exceptions -lexical, qw(
+    UnexpectedRef
+    UnexpectedUndef
+  );
 
 =head1 BUGS
 

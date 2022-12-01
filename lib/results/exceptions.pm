@@ -186,6 +186,19 @@ Returns the err kind as a string.
 
 Stringifies the exception. Exception objects also support string overloading.
 
+=head2 Lexical exports
+
+L<results::exceptions> supports lexical exports:
+
+  use results::exceptions -lexical, (
+    'DatabaseConnection',
+    'Unauthorized' => { has => [ 'username' ] },
+    'BadSqlSyntax' => { has => [ 'query' ] },
+  );
+
+This feature requires Perl 5.37.2 or above, or L<Lexical::Sub> on older
+versions of Perl.
+
 =head1 BUGS
 
 Please report any bugs to
