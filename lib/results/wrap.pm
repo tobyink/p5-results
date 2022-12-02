@@ -7,7 +7,7 @@ use results ();
 package results::wrap;
 
 our $AUTHORITY = 'cpan:TOBYINK';
-our $VERSION   = '0.003';
+our $VERSION   = '0.004';
 
 BEGIN {
 	if ( $] ge '5.034' ) {

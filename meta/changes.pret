@@ -1,5 +1,12 @@
 # This file acts as the project's changelog.
 
+`results 0.004 cpan:TOBYINK`
+	issued  2022-12-02;
+	changeset [
+		item "Provide the results::wrap module."^^Addition;
+		item "Add unit tests for results::exceptions."^^Tests;
+	].
+
 `results 0.003 cpan:TOBYINK`
 	issued  2022-12-01;
 	changeset [
