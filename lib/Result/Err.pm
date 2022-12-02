@@ -7,7 +7,7 @@ use Result::Trait ();
 package Result::Err;
 
 our $AUTHORITY = 'cpan:TOBYINK';
-our $VERSION   = '0.004';
+our $VERSION   = '0.005';
 
 use Role::Tiny::With;
 with 'Result::Trait';

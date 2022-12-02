@@ -1,5 +1,11 @@
 # This file acts as the project's changelog.
 
+`results 0.005 cpan:TOBYINK`
+	issued  2022-12-02;
+	changeset [
+		item "Minor fixes and improvements to documentation."^^Documentation;
+	].
+
 `results 0.004 cpan:TOBYINK`
 	issued  2022-12-02;
 	changeset [
