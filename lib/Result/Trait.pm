@@ -791,7 +791,7 @@ If C<< get_config() >> returns an ok Result containing a hashref, then:
 
   use Types::Common qw( HashRef );
   
-  my $config = get_config->type_or( HashRef, {} )->unwrap();
+  my $config = get_config->type_or( {}, HashRef )->unwrap();
 
 =cut
 
