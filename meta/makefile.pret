@@ -5,6 +5,7 @@
 `results`
 	:runtime-requirement    [ :on "perl 5.014"^^:CpanId ];
 	:runtime-requirement    [ :on "Carp"^^:CpanId ];
+	:runtime-requirement    [ :on "Devel::StrictMode"^^:CpanId ];
 	:runtime-requirement    [ :on "Exporter::Shiny"^^:CpanId ];
 	:runtime-requirement    [ :on "Role::Tiny"^^:CpanId ];
 	:runtime-requirement    [ :on "Scalar::Util"^^:CpanId ];

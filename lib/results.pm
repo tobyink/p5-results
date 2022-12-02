@@ -3,6 +3,7 @@ use strict;
 use warnings;
 
 use Carp ();
+use Devel::StrictMode ();
 use Scalar::Util ();
 
 package results;
@@ -47,6 +48,8 @@ sub ok_list {
 }
 
 sub UNIVERSAL::Result : ATTR(CODE) {
+	Devel::StrictMode::STRICT or return;
+
 	my ( $package, $symbol, $referent, $attr, $data ) = @_;
 	my $name = *{$symbol}{NAME};
 
@@ -251,6 +254,11 @@ scalars.
   sub to_uppercase : Result(Str) {
     ...;
   }
+
+This declaration is only I<checked> if one of the C<PERL_STRICT>,
+C<AUTHOR_TESTING>, C<RELEASE_TESTING>, or C<EXTENDED_TESTING> environment
+variables is set to true. Otherwise, the attribute operates on the "honour
+system"!
 
 =head2 Exception Objects
 

@@ -19,6 +19,8 @@ the same terms as the Perl 5 programming language system itself.
 
 =cut
 
+BEGIN { $ENV{PERL_STRICT} = 1 };
+
 use Test2::V0;
 use Test2::Require::Module 'Type::Utils';
 use Data::Dumper;
