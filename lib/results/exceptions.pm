@@ -202,7 +202,7 @@ versions of Perl.
 =head1 BUGS
 
 Please report any bugs to
-<https://github.com/tobyink/p5-results/issues>.
+L<https://github.com/tobyink/p5-results/issues>.
 
 =head1 SEE ALSO
 

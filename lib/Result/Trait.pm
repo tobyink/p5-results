@@ -11,8 +11,7 @@ use warnings;
 =head1 NAME
 
 Result::Trait - the trait which all Result objects implement
-
-=head1 SYNOPSIS
+head1 SYNOPSIS
 
   use results;
   
@@ -1009,7 +1008,7 @@ the default implementations are not the fastest.
 =head1 BUGS
 
 Please report any bugs to
-<https://github.com/tobyink/p5-results/issues>.
+L<https://github.com/tobyink/p5-results/issues>.
 
 =head1 SEE ALSO
 
