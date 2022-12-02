@@ -5,7 +5,7 @@ use warnings;
 package results::exceptions;
 
 our $AUTHORITY = 'cpan:TOBYINK';
-our $VERSION   = '0.005';
+our $VERSION   = '0.006';
 
 use results ();
 use B ();

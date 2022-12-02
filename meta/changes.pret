@@ -3,6 +3,13 @@
 `results 0.005 cpan:TOBYINK`
 	issued  2022-12-02;
 	changeset [
+		item "Functions can now use a `:Result` attribute to indicate they return a Result. They may optionally include a type constraint, like `:Result(Int)`."^^Addition;
+		item "Clarify that wantarray in functions returning a Result is useless."^^Documentation;
+	].
+
+`results 0.005 cpan:TOBYINK`
+	issued  2022-12-02;
+	changeset [
 		item "Minor fixes and improvements to documentation."^^Documentation;
 	].
 

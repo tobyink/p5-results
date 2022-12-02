@@ -9,7 +9,7 @@ use Scalar::Util ();
 package results;
 
 our $AUTHORITY = 'cpan:TOBYINK';
-our $VERSION   = '0.005';
+our $VERSION   = '0.006';
 
 use Exporter::Shiny qw( err is_result ok ok_list );
 our @EXPORT = qw( err ok );
