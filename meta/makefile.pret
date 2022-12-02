@@ -13,6 +13,7 @@
 	:test-requirement       [ :on "Test2::Require::AuthorTesting"^^:CpanId ];
 	:test-requirement       [ :on "Test2::Require::Module"^^:CpanId ];
 	:test-requirement       [ :on "Type::Nano"^^:CpanId ];
+	:test-recommendation    [ :on "Type::Utils"^^:CpanId ];
 	:develop-recommendation [ :on "Dist::Inkt 0.001"^^:CpanId ];
 	.
 

@@ -13,6 +13,8 @@ our $VERSION   = '0.005';
 use Exporter::Shiny qw( err is_result ok ok_list );
 our @EXPORT = qw( err ok );
 
+use Attribute::Handlers;
+
 require Result::Err;
 require Result::Ok;
 require Result::OkList;
@@ -42,6 +44,34 @@ sub ok {
 sub ok_list {
 	Carp::croak("Void context forbidden here") unless defined wantarray;
 	OK_LIST_CLASS->new( @_ );
+}
+
+sub UNIVERSAL::Result : ATTR(CODE) {
+	my ( $package, $symbol, $referent, $attr, $data ) = @_;
+	my $name = *{$symbol}{NAME};
+
+	no strict 'refs';
+	no warnings 'redefine';
+
+	if ( ref($data) eq 'ARRAY' ) {
+		require Type::Utils;
+		my $type = Type::Utils::dwim_type( $data->[0], for => $package );
+
+		*{"$package\::$name"} = sub {
+			my $return = $referent->( @_ );
+			die "Function '$name' declared to return a Result, but returned: $return"
+				unless is_result( $return );
+			$return->type( $type );
+		};
+	}
+	else {
+		*{"$package\::$name"} = sub {
+			my $return = $referent->( @_ );
+			die "Function '$name' declared to return a Result, but returned: $return"
+				unless is_result( $return );
+			$return;
+		};
+	}
 }
 
 1;
@@ -205,6 +235,22 @@ Like C<< ok() >> this can take a list:
   return err( MyApp::Error::Net->new, 0 .. 99 );
 
 This would be unusual though, and is not generally recommended.
+
+=head2 The C<< :Result >> Attribute
+
+You can declare that your function always returns a Result using an attribute.
+
+  sub to_uppercase : Result {
+    ...;
+  }
+
+If you have L<Type::Utils> installed, then you can even specify the "inner"
+type for successful Results, though this assumes that your Results are
+scalars.
+
+  sub to_uppercase : Result(Str) {
+    ...;
+  }
 
 =head2 Exception Objects
 

@@ -69,4 +69,27 @@ describe "function `ok_list`" => sub {
 	};
 };
 
+sub foobar : Result {
+	my $in = shift;
+	if ( $in > 0 ) {
+		return results::ok( $in );
+	}
+	if ( $in < 0 ) {
+		return results::err( $in );
+	}
+	return 0;  # BAD
+}
+
+describe "attribute `:Result`" => sub {
+
+	tests 'it works' => sub {
+
+		is( foobar(2)->unwrap, 2 );
+		is( foobar(-3)->unwrap_err, -3 );
+
+		my $e = dies { foobar(0) };
+		like( $e, qr/^Function 'foobar' declared to return a Result, but returned: 0/ );
+	};
+};
+
 done_testing;

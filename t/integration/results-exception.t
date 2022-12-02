@@ -22,7 +22,6 @@ the same terms as the Perl 5 programming language system itself.
 package Local::Test;
 
 use Test2::V0 -target => 'results::exceptions';
-use Test2::Tools::Spec;
 use Data::Dumper;
 
 use results::exceptions (
