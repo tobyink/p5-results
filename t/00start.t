@@ -23,12 +23,15 @@ use 5.014;
 use Test2::V0;
 
 my @modules = qw(
+	Attribute::Handlers
 	Carp
 	Exporter::Shiny
 	Lexical::Sub
 	Role::Tiny
 	Scalar::Util
 	Syntax::Keyword::Try
+	Type::Nano
+	Type::Utils
 );
 
 diag "\n####";
