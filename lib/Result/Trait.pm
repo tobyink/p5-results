@@ -11,7 +11,8 @@ use warnings;
 =head1 NAME
 
 Result::Trait - the trait which all Result objects implement
-head1 SYNOPSIS
+
+=head1 SYNOPSIS
 
   use results;
   
