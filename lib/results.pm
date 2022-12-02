@@ -213,6 +213,10 @@ C<< ok_list() >> is not exported by default, but can be requested:
 
   use results qw( :default ok_list );
 
+Note that C<wantarray> will be useless in your function because the caller
+will always be expecting a single scalar Result object. (Which may or may not
+contain a list of values!)
+
 =head3 C<< err() >>
 
 The C<< err() >> function returns an error, or unsuccessful result.
