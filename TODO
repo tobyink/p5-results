@@ -1,0 +1,1 @@
+(A) XS implementations of Result::{Ok,Err}::{new,expect,expect_err,unwrap,unwrap_err,is_ok,is_err,ok,err,_peek,_peek_err,_handled}
