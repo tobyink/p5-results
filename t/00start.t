@@ -25,14 +25,17 @@ use Test2::V0;
 my @modules = qw(
 	Carp
 	Exporter::Shiny
+	Lexical::Sub
 	Role::Tiny
 	Scalar::Util
+	Syntax::Keyword::Try
 );
 
 diag "\n####";
 for my $mod ( sort @modules ) {
-	eval "require $mod;";
-	diag sprintf( '%-20s %s', $mod, $mod->VERSION );
+	eval( "require $mod; 1" )
+		? diag( sprintf( '%-20s %s', $mod, $mod->VERSION ) )
+		: diag( sprintf( '%-20s x', $mod ) );
 }
 diag "####";
 
